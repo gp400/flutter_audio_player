@@ -23,6 +23,7 @@ class AudioPage extends StatefulWidget {
 
 class _AudioPageState extends State<AudioPage> {
   final player = AudioPlayer();
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -37,6 +38,8 @@ class _AudioPageState extends State<AudioPage> {
     await player.pause();
     await player.seek(Duration.zero);
     await player.setVolume(1);
+    isLoading = false;
+    setState(() {});
   }
 
   Future<void> playAudio(String path) async {
@@ -54,27 +57,43 @@ class _AudioPageState extends State<AudioPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Audio Player')),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ElevatedButton(
-              onPressed: () async {
-                await playAudio('fahhhhh.wav');
-              },
-              child: Text('FAAHHH'),
-            ),
+      body: StreamBuilder<PlayerState>(
+        stream: player.playerStateStream,
+        builder: (context, snapshot) {
+          return Center(
+            child: isLoading
+                ? CircularProgressIndicator()
+                : Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          await playAudio('fahhhhh.wav');
+                        },
+                        child: Text('FAAHHH'),
+                      ),
 
-            SizedBox(height: 10),
+                      SizedBox(height: 10),
 
-            ElevatedButton(
-              onPressed: () async {
-                await playAudio('goat_scream.wav');
-              },
-              child: Text('Goat scream'),
-            ),
-          ],
-        ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          await playAudio('goat_scream.wav');
+                        },
+                        child: Text('Goat scream'),
+                      ),
+
+                      SizedBox(height: 10),
+
+                      ElevatedButton(
+                        onPressed: () async {
+                          await playAudio('why_are_you_gay.wav');
+                        },
+                        child: Text('Why are you gay?'),
+                      ),
+                    ],
+                  ),
+          );
+        },
       ),
     );
   }
