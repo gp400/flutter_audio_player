@@ -90,6 +90,14 @@ class _AudioPageState extends State<AudioPage> {
                         },
                         child: Text('Why are you gay?'),
                       ),
+                      SizedBox(height: 10),
+
+                      ElevatedButton(
+                        onPressed: () async {
+                          await playAudio('moriremos.wav');
+                        },
+                        child: Text('Moriremos'),
+                      ),
                     ],
                   ),
           );
